@@ -1,5 +1,8 @@
 package com.atguigu.mybatis.bean;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("emp")
 public class Employee {
 	
 	private Integer id;

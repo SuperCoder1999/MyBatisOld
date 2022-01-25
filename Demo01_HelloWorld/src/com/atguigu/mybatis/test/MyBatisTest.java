@@ -38,7 +38,7 @@ public class MyBatisTest {
 	 * 			一个sqlSession就是代表和数据库的一次会话，用完关闭
 	 * 		3.1)[旧版本的sql映射文件]、使用sql的唯一标志(一般用sql映射文件的namespace和唯一标志id共同确定id)来告诉MyBatis执行哪个sql。
 	 * 		sql语句都是保存在sql映射文件中的。
-	 * 		3.2)[新版本sql映射文件]. 获取接口的实现类对象.使用sqlSession对象为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+	 * 		3.2)[新版本sql映射文件+绑定的接口]. 获取接口的实现类对象.使用sqlSession对象为接口自动的创建一个代理对象，代理对象去执行增删改查方法
 	 */
 
 	//根据全局配置文件 获取 SqlSessionFactory
