@@ -9,8 +9,25 @@ public class Employee {
 	private String lastName;
 	private String email;
 	private String gender;
-	
-	
+	private Department dept;
+
+	//许多框架都需要 无参构造器.
+	public Employee() {
+	}
+
+	public Employee(Integer id, String lastName, String email, String gender) {
+		this.id = id;
+		this.lastName = lastName;
+		this.email = email;
+		this.gender = gender;
+	}
+	public Department getDept() {
+		return dept;
+	}
+
+	public void setDept(Department dept) {
+		this.dept = dept;
+	}
 	public Integer getId() {
 		return id;
 	}

@@ -21,7 +21,13 @@
 		mapUnderscoreToCamelCase:作用将下划线匹配驼峰命名规则(大小写不太清楚,下划线一定可以匹配成功)
 	 -->
 	<settings>
-		<setting name="mapUnderscoreToCamelCase" value="true"/>
+		<!--注释掉驼峰匹配,用于验证自定义resultMap-->
+		<!--<setting name="mapUnderscoreToCamelCase" value="true"/>-->
+		<setting name="jdbcTypeForNull" value="NULL"/>
+
+		<!--显示的指定每个我们需要更改的配置的值，即使他是默认的。防止版本更新带来的问题  -->
+		<setting name="lazyLoadingEnabled" value="true"/>
+		<setting name="aggressiveLazyLoading" value="false"/>
 	</settings>
 
 	<!-- 3、typeAliases：别名处理器：可以为我们的java类型起别名
