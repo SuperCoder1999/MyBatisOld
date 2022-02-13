@@ -16,7 +16,9 @@ public interface EmployeeMapperDynamicSQL {
 
     public List<Employee> getEmpsByConditionChoose(Employee employee);
 
-    public void updateEmp(Employee employee);
+    public void updateEmpSet(Employee employee);
+
+    public void updateEmpTrim(Employee employee);
 
     //查询员工id'在给定集合中的
     public List<Employee> getEmpsByConditionForeach(@Param("ids")List<Integer> ids);
