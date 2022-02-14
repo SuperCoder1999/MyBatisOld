@@ -1,5 +1,6 @@
 package com.atguigu.mybatis.test;
 
+import com.atguigu.mybatis.bean.Department;
 import com.atguigu.mybatis.bean.Employee;
 import com.atguigu.mybatis.dao.EmployeeMapperDynamicSQL;
 import org.apache.ibatis.io.Resources;
@@ -10,6 +11,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -142,6 +144,43 @@ public class MyBatisTest {
         }
     }
 
+    //测试DynamicSQL的 foreach 实现传入长度变动的集合进行查询
+    @Test
+    public void testDynamicSqlForeach() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try{
+            EmployeeMapperDynamicSQL mapper = openSession.getMapper(EmployeeMapperDynamicSQL.class);
+
+            //拼接后: select * from tbl_employee where id in( ? , ? , ? , ? )  --为什么没有将遍历的数字也填入???
+
+            List<Employee> emps2 = mapper.getEmpsByConditionForeach(Arrays.asList(1,2,3,4));
+            for (Employee emp : emps2) {
+                System.out.println(emp);
+            }
+        }finally{
+            openSession.close();
+        }
+    }
+
+    //测试DynamicSQL的 foreach 实现批量插入
+    @Test
+    public void testDynamicSqlAddEmps() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try{
+            EmployeeMapperDynamicSQL mapper = openSession.getMapper(EmployeeMapperDynamicSQL.class);
+
+            //拼接后: insert into tbl_employee( last_name,email,gender,d_id ) values (?,?,?,?) , (?,?,?,?)
+            List<Employee> emps = new ArrayList<>();
+            emps.add(new Employee(null, "smith0x1", "smith0x1@atguigu.com", "1",new Department(1)));
+            emps.add(new Employee(null, "allen0x1", "allen0x1@atguigu.com", "0",new Department(1)));
+            mapper.addEmps(emps);
+            openSession.commit();
+        }finally{
+            openSession.close();
+        }
+    }
 
     public SqlSessionFactory getSqlSessionFactory() throws IOException {
         String resource = "mybatis-config.xml";

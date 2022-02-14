@@ -143,18 +143,21 @@
         where id=#{id}
     </update>
 
+    <!--用foreach实现传入数组,遍历数组. -根据条件查询-->
     <!--public List<Employee> getEmpsByConditionForeach(List<Integer> ids);  -->
     <select id="getEmpsByConditionForeach" resultType="com.atguigu.mybatis.bean.Employee">
         select * from tbl_employee
         <!--
             collection：指定要遍历的集合：
-                list类型的参数会特殊处理封装在map中，map的key就叫list
-            item：将当前遍历出的元素赋值给指定的变量
-            separator:每个元素之间的分隔符
-            open：遍历出所有结果拼接一个开始的字符
-            close:遍历出所有结果拼接一个结束的字符
+                list类型的参数会特殊处理封装在map中，map的key就叫list (这里意思是即使传入list底层也用map,所以
+                以下的步骤是固定的?)
+            item：将当前遍历出的元素赋值给指定的变量 (用于后续的调用)
+            separator:每个元素之间的分隔符 (遍历时每个元素之间用什么分割.比如in(),每遍历一个,就加一个逗号in(1,2) -> in(1,2,3)
+              形成最后的sql语句.而批量插入中拼接后: values (?,?,?,?) , (?,?,?,?)两个括号之间的逗号就是separator)
+            open：遍历出所有结果拼接一个开始的字符 (就是在每个循环的记过前后都添加这些前后缀)
+            close:遍历出所有结果拼接一个结束的字符 (就是在每个循环的记过前后都添加这些前后缀)
             index:索引。遍历list的时候是index就是索引，item就是当前值
-                          遍历map的时候index表示的就是map的key，item就是map的值
+                          遍历map的时候index表示的就是map的key，item就是map的值 (index没有演示,我也有些疑惑)
 
             #{变量名}就能取出变量的值也就是当前遍历出的元素
           -->
@@ -164,9 +167,9 @@
         </foreach>
     </select>
 
-    <!-- 批量保存 -->
+    <!-- 使用 foreach在 insert标签中 批量保存(推荐这第一种方式) -->
     <!--public void addEmps(@Param("emps")List<Employee> emps);  -->
-    <!--MySQL下批量保存：可以foreach遍历   mysql支持values(),(),()语法-->
+    <!--MySQL下批量保存：可以foreach遍历 这种拼接后是values(),(),(),mysql支持这种语法-->
     <insert id="addEmps">
         insert into tbl_employee(
         <include refid="insertColumn"></include>
@@ -175,16 +178,19 @@
         <foreach collection="emps" item="emp" separator=",">
             (#{emp.lastName},#{emp.email},#{emp.gender},#{emp.dept.id})
         </foreach>
-    </insert><!--   -->
+    </insert>
 
     <!-- 这种方式需要数据库连接属性allowMultiQueries=true；
-        这种分号分隔多个sql可以用于其他的批量操作（删除，修改） -->
-    <!-- <insert id="addEmps">
+        这种分号分隔多个sql可以用于其他的批量操作（删除，修改）.暂时不知道好处是什么??
+         这种拼接后是多个 insert语句.需要打开allowMultiQueries才能操作
+         拼接后的sql是: insert into tbl_employee(last_name,email,gender,d_id) values(?,?,?,?) ; insert into
+         tbl_employee(last_name,email,gender,d_id) values(?,?,?,?)  -这个分号就是separator -->
+  <!--   <insert id="addEmps">
         <foreach collection="emps" item="emp" separator=";">
             insert into tbl_employee(last_name,email,gender,d_id)
             values(#{emp.lastName},#{emp.email},#{emp.gender},#{emp.dept.id})
         </foreach>
-    </insert> -->
+    </insert>-->
 
     <!-- Oracle数据库批量保存：
         Oracle不支持values(),(),()
