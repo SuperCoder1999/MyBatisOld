@@ -15,7 +15,7 @@
 		方法：public Employee getEmpByIdAndLastName(Integer id,String lastName);
 		取值：#{id},#{lastName}
 
-【命名参数】：明确指定封装参数时map的key；@Param("id") (在sql方法中的形参中添加注解)
+【命名参数】：明确指定封装参数时map的key；@Param("id") (在接口方法中的形参中添加注解)
 	多个参数会被封装成 一个map，
 		key：使用@Param注解指定的值
 		value：参数值
@@ -29,6 +29,16 @@ POJO：
 Map：
 如果多个参数不是业务模型中的数据，没有对应的pojo，不经常使用，为了方便，我们也可以传入map
 	#{key}：取出map中对应的值
+
+集合:
+Collection（List、Set）类型或者是数组，
+		 也会特殊处理。也是把传入的list或者数组封装在map中。
+			key：Collection的键名是collection,如果是List可以使用 collection/list
+				数组 的是 array .而值就是集合本身
+public Employee getEmpById(List<Integer> ids);
+	取值：取出第一个id的值：   #{list[0]}
+	    (就是说,key就是一个新的数组(数组名由mybatis定义了),每个元素都对应一个value)
+简便方式: 用@Param 自定义集合名. 集合名[] 调用每个元素.
 
 TO：(这个没详细介绍,我也不懂,暂时放过)
 如果多个参数不是业务模型中的数据，但是经常要使用，推荐来编写一个TO（Transfer Object）数据传输对象

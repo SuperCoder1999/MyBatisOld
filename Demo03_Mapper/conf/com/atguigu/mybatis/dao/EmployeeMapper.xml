@@ -15,7 +15,7 @@
 	<!--parameterType:传入的参数类型,可以省略.MyBatis会自动检查
 		values参数中,添加的格式:#{bean类的属性名}
 	获取自增主键的值：
-		mysql支持自增主键，自增主键值的获取，jdbc也是利用statement.getGeneratedKeys()；
+		mysql支持自增主键，自增主键值的获取，jdbc也是利用statement.getGeneratedKeys(),而mybatis就是封装jdbc的,所以添加属性；
 		useGeneratedKeys="true"；使用自增主键获取主键值策略
 		keyProperty；指定对应的主键属性，也就是mybatis获取到主键值以后，将这个值封装给javaBean的哪个属性
 		(传入数据的对象就是addEmp方法传入的参数对象)-->

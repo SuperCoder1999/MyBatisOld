@@ -28,7 +28,7 @@
             从参数中取值进行判断
 
             遇见特殊符号应该去写转义字符：
-            &&：and / "": &quot;&quot;
+            &&：and , "": &quot;&quot;
             另外,字符串判断可以用= 也可以用equal函数
             -->
             <if test="id!=null">
@@ -80,7 +80,7 @@
     </select>
 
     <!--使用 choos保证拼接正确性
-        choose(在where下使用,when, otherwise):分支选择；类似带了break的swtich-casee  -->
+        choose(在where下使用,when, otherwise):分支选择；类似带了break的swtich-case 也就是if...else...if...else...  -->
     <!-- public List<Employee> getEmpsByConditionChoose(Employee employee); -->
     <select id="getEmpsByConditionChoose" resultType="com.atguigu.mybatis.bean.Employee">
         select * from tbl_employee
